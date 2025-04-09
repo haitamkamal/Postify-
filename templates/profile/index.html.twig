@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<a href="{{ path('app_user') }}">X</a>
+	<h1>Your Profile</h1>
+
+	<!-- Display current profile image with cache-busting query parameter -->
+	<img src="{{ asset('uploads/profile_images/' ~ (app.user.profileImage ? app.user.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 50px; height: 50px; border-radius: 50%;">
+
+
+	<h2>Update Profile Image</h2>
+
+	Vous êtes connecté en tant que :
+	{{ app.user.userIdentifier }}<br>
+
+	<p>Nom d'utilisateur :
+		{{ app.user.username }}</p>
+
+	<p>votre identifiant :
+		{{ app.user.id }}</p>
+
+	{{ form_start(form) }}
+	{{ form_row(form.profile_image) }}
+	<button type="submit">Upload New Image</button>
+	{{ form_end(form) }}
+{% endblock %}

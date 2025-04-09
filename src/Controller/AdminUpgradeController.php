@@ -25,7 +25,7 @@ class AdminUpgradeController extends AbstractController
 public function upgradeToAdmin(
     Request $request,
     EntityManagerInterface $entityManager,
-    TokenStorageInterface $tokenStorage
+    TokenStorageInterface $tokenStorage,
 ): Response {
     // 1. Verify user is authenticated
     $user = $this->getUser();

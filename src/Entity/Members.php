@@ -37,7 +37,7 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $profileImage = 'default.png';
+    private ?string $profileImage = 'default_image.png';
 
     public function getId(): ?int
     {
@@ -134,7 +134,7 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-    
+
         public function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles(), true);
