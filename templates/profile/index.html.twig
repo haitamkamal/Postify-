@@ -7,7 +7,6 @@
 	<!-- Display current profile image with cache-busting query parameter -->
 	<img src="{{ asset('uploads/profile_images/' ~ (app.user.profileImage ? app.user.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 50px; height: 50px; border-radius: 50%;">
 
-
 	<h2>Update Profile Image</h2>
 
 	Vous êtes connecté en tant que :
@@ -21,6 +20,15 @@
 
 	{{ form_start(form) }}
 	{{ form_row(form.profile_image) }}
-	<button type="submit">Upload New Image</button>
+	<button type="submit">Télécharger une nouvelle image</button>
 	{{ form_end(form) }}
+
+	<!-- Add delete account form -->
+	<h2>Supprimer le compte</h2>
+	<form action="{{ path('delete_account') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+		<p>Êtes-vous sûr de vouloir supprimer votre compte ?</p>
+		<button type="submit" class="btn btn-danger">Supprimer le compte</button>
+		<input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}">
+	</form>
+
 {% endblock %}

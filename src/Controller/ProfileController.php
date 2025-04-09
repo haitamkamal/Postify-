@@ -2,6 +2,8 @@
 
 // src/Controller/ProfileController.php
 
+// src/Controller/ProfileController.php
+
 namespace App\Controller;
 
 use App\Form\ProfileImageType;
@@ -26,7 +28,15 @@ class ProfileController extends AbstractController
     #[Route('/profile', name: 'profile')]
     public function profile(Request $request): Response
     {
-        $user = $this->getUser();  // Get the currently logged-in user
+        // Get the currently logged-in user
+        $user = $this->getUser();
+
+        // Check if user is logged in
+        if (!$user) {
+            // If no user is logged in, redirect to the login page
+            return $this->redirectToRoute('app_login');
+        }
+
         $form = $this->createForm(ProfileImageType::class);
 
         $form->handleRequest($request);
@@ -58,15 +68,12 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
-        // Get the profile image filename
-        $profileImageFilename = 'uploads/profile_images/' . $user->getProfileImage();
-        
-        // Check if the file exists and get the modification time for cache-busting
-        $profileImageTimestamp = file_exists($profileImageFilename) ? filemtime($profileImageFilename) : time();
+        // Get the profile image filename (handle null case)
+        $profileImageFilename = $user->getProfileImage() ? 'uploads/profile_images/' . $user->getProfileImage() : 'uploads/profile_images/default_image.png';
 
         return $this->render('profile/index.html.twig', [
             'form' => $form->createView(),
-            'profileImageTimestamp' => $profileImageTimestamp, // Pass timestamp to Twig for cache-busting
+            'profileImage' => $profileImageFilename,
         ]);
     }
 }
