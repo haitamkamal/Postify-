@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Members;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -10,8 +12,22 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LogInController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils,EntityManagerInterface  $em): Response
     {
+          if ($this->getUser()) {
+                    // Always get FRESH user data from database
+                    $freshUser = $em->getRepository(Members::class)->find($this->getUser()->getId());
+        
+                    // Debugging - check what roles are actually loaded
+                    dump($freshUser->getRoles());
+                    
+                    // Check roles on the fresh user object
+                    if (in_array('ROLE_ADMIN', $freshUser->getRoles())) {
+                        return $this->redirectToRoute('app_admin');
+                    }
+                    return $this->redirectToRoute('app_user');
+                }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 

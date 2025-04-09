@@ -87,18 +87,16 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
-
+        // Ensure we don't store duplicate ROLE_USER
+        $this->roles = array_unique($roles);
         return $this;
     }
 
@@ -135,5 +133,18 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+    
+        public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->getRoles(), true);
+    }
+
+    public function upgradeToAdmin(): void
+    {
+        if (!$this->hasRole('ROLE_ADMIN')) {
+            $this->roles[] = 'ROLE_ADMIN';
+            $this->roles = array_unique($this->roles);
+        }
     }
 }

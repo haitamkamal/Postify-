@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!
+{% endblock %}
+
+{% block body %}
+
+
+	{% if app.user %}
+		<div class="mb-3">
+			<a href="#" onclick="toggleUserInfo(event)">
+				<img src="{{ asset('uploads/default_image.png') }}" alt="Profile Picture" style="width: 30px; height: 30px; border-radius: 50%;">
+			</a>
+
+			<div id="user-info" style="display: none; margin-top: 10px;">
+				Vous êtes connecté en tant que
+				{{ app.user.userIdentifier }}<br>
+				<a href="{{ path('app_logout') }}">Déconnexion</a>
+
+			</div>
+		</div>
+
+		<div>
+			<p>Nom d'utilisateur:{{ app.user.username }}</p>
+
+			<p>Rôle:utilisateur</p>
+
+			<a href=" {{ path('upgrade_to_admin') }}">Vip</a><br>
+
+
+		</div>
+
+		<script>
+			function toggleUserInfo(event) {
+event.preventDefault();
+let userInfo = document.getElementById("user-info");
+userInfo.style.display = userInfo.style.display === "none" ? "block" : "none";
+}
+		</script>
+	{% endif %}
+{% endblock %}
