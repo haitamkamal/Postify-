@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Profile
+{% endblock %}
+
 
 {% block body %}
+
+
 	{% if is_granted('ROLE_ADMIN')%}
 		<a href="{{path('app_admin')}}">X</a>
 	{% else %}
@@ -35,6 +39,8 @@
 	{{ form_end(form) }}
 
 	<!-- Add delete account form -->
+
+
 	<h2>Supprimer le compte</h2>
 	<form action="{{ path('delete_account') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
 		<p>Êtes-vous sûr de vouloir supprimer votre compte ?</p>

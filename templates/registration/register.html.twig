@@ -5,6 +5,10 @@
 
 {% block body %}
 	<h1>Register</h1>
+	<a href="{{ path('connect_google') }}">Connectez-vous avec Google</a><br>
+
+	<a href="{{ path('connect_github') }}">Connectez-vous avec GitHub</a>
+
 
 	{{ form_errors(registrationForm) }}
 

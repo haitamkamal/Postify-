@@ -25,8 +25,17 @@
 		<div>
 			<p>Nom d'utilisateur :
 				{{ app.user.username }}</p>
-			<p>Rôle: utilisateur</p>
+
+			<p>
+				Rôle:
+				{% if 'ROLE_ADMIN' in app.user.roles %}
+					{{ app.user.gender == 'female' ? 'administratrice' : 'administrateur' }}
+				{% else %}
+					{{ app.user.gender == 'female' ? 'utilisatrice' : 'utilisateur' }}
+				{% endif %}
+			</p>
 			<a href="{{ path('upgrade_to_admin') }}">Prendre VIP</a><br>
+
 		</div>
 
 		<script>
