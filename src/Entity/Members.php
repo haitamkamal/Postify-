@@ -24,6 +24,9 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
+    #[ORM\Column( type:'string' ,length:20 , nullable:true )]
+    private ?string $gender = null;
+
     /**
      * @var list<string> The user roles
      */
@@ -32,7 +35,7 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
-     */
+     */ 
     #[ORM\Column]
     private ?string $password = null;
 
@@ -67,6 +70,16 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getGender (): ?string 
+    {
+        return $this-> gender;
+    }
+
+    public function setGender (?string $gender):static
+    {
+        $this->gender = $gender;
+        return $this;
+    }
 
     /**
      * A visual identifier that represents this user.

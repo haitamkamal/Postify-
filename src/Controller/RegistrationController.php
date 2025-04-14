@@ -36,6 +36,9 @@ class RegistrationController extends AbstractController
             // Set default profile image
             $user->setProfileImage('default_image.png');
 
+            //  Set gender from form data
+            $user->setGender($form->get('gender')->getData());
+
             $entityManager->persist($user);
             $entityManager->flush();
 

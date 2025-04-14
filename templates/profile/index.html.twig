@@ -1,7 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Profile
+
 {% block body %}
-	<a href="{{ path('app_user') }}">X</a>
+	{% if is_granted('ROLE_ADMIN')%}
+		<a href="{{path('app_admin')}}">X</a>
+	{% else %}
+		<a href="{{path('app_user')}}">X</a>
+	{% endif %}
+
+
 	<h1>Your Profile</h1>
 
 	<!-- Display current profile image with cache-busting query parameter -->
@@ -17,6 +25,9 @@
 
 	<p>votre identifiant :
 		{{ app.user.id }}</p>
+
+	<p>Votre genre :
+		{{app.user.gender}}</p>
 
 	{{ form_start(form) }}
 	{{ form_row(form.profile_image) }}

@@ -12,6 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 
 class RegistrationFormType extends AbstractType
 {
@@ -20,6 +22,7 @@ class RegistrationFormType extends AbstractType
         $builder
             
             ->add('username', TextType::class, [
+                'label' => 'Nom d\'utilisateur',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a username',
@@ -31,8 +34,11 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('email')
+            ->add('email',null,[
+                'label' => 'Adresse e-mail',
+            ])
             ->add('agreeTerms', CheckboxType::class, [
+                
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -40,10 +46,19 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('gender', ChoiceType::class, [
+                    'choices' => [
+                        'Male' => 'male',
+                        'Female' => 'female',
+                    ],
+                    'placeholder' => 'sélectionnez votre sexe',
+                    'required' => true,
+                    'label' => 'Genre',
+            ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                
                 'mapped' => false,
+                'label' => 'Mot de passe',
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
@@ -57,6 +72,8 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+
+
         ;
     }
 
