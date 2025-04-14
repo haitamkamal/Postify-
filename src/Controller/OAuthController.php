@@ -27,15 +27,24 @@ class OAuthController extends AbstractController
         $email = $googleUser->getEmail();
         $user = $em->getRepository(Members::class)->findOneBy(['email' => $email]);
 
-        if (!$user) {
-            $user = new Members();
-            $user->setEmail($email);
-            $user->setUsername($googleUser->getName());
-            $user->setRoles(['ROLE_USER']);
-            $user->setPassword('');
-            $em->persist($user);
-            $em->flush();
+  if (!$user) {
+        $user = new Members();
+        $user->setEmail($email);
+        $user->setUsername($googleUser->getName());
+        $user->setRoles(['ROLE_USER']);
+        $user->setPassword(''); // optional if using OAuth only
+
+        // Set the gender if available
+        $gender = $googleUser->toArray()['gender'] ?? null;
+        if ($gender) {
+            $user->setGender($gender);
+            
         }
+
+        $em->persist($user);
+        $em->flush();
+    }
+
 
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->container->get('security.token_storage')->setToken($token);
@@ -65,6 +74,9 @@ class OAuthController extends AbstractController
             $user->setUsername($githubUser->getNickname() ?? $githubUser->getName());
             $user->setRoles(['ROLE_USER']);
             $user->setPassword('');
+
+            $user->setGender(null);
+
             $em->persist($user);
             $em->flush();
         }

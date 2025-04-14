@@ -1,12 +1,10 @@
 <?php
-
-// src/Controller/ProfileController.php
-
 // src/Controller/ProfileController.php
 
 namespace App\Controller;
 
 use App\Form\ProfileImageType;
+use App\Form\GenderType;
 use App\Entity\Members;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -19,7 +17,6 @@ class ProfileController extends AbstractController
 {
     private $entityManager;
 
-    // Inject the EntityManagerInterface into the controller
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -33,31 +30,31 @@ class ProfileController extends AbstractController
 
         // Check if user is logged in
         if (!$user) {
-            // If no user is logged in, redirect to the login page
             return $this->redirectToRoute('app_login');
         }
 
-        $form = $this->createForm(ProfileImageType::class);
+        // Create forms for profile image and gender
+        $formImage = $this->createForm(ProfileImageType::class, $user);
+        $formImage->handleRequest($request);
 
-        $form->handleRequest($request);
+        $formGender = $this->createForm(GenderType::class, $user);
+        $formGender->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('profile_image')->getData();
+        // Handling profile image update
+        if ($formImage->isSubmitted() && $formImage->isValid()) {
+            $file = $formImage->get('profile_image')->getData();
 
             if ($file) {
-                // Generate a unique filename for the image
                 $filename = uniqid() . '.' . $file->guessExtension();
 
                 try {
-                    // Move the file to the 'uploads/profile_images' directory
                     $file->move(
-                        $this->getParameter('profile_images_directory'),  // This will be defined in services.yaml
+                        $this->getParameter('profile_images_directory'),
                         $filename
                     );
 
-                    // Update the user's profile image in the database
                     $user->setProfileImage($filename);
-                    $this->entityManager->flush();  // Persist the changes
+                    $this->entityManager->flush();
 
                     $this->addFlash('success', 'Profile image updated successfully!');
                 } catch (FileException $e) {
@@ -68,11 +65,20 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
-        // Get the profile image filename (handle null case)
+        // Handling gender update
+        if ($formGender->isSubmitted() && $formGender->isValid()) {
+            $this->entityManager->flush();  // Persist the gender changes
+
+            $this->addFlash('success', 'Your gender has been updated!');
+            return $this->redirectToRoute('profile');
+        }
+
+        // Get the profile image filename
         $profileImageFilename = $user->getProfileImage() ? 'uploads/profile_images/' . $user->getProfileImage() : 'uploads/profile_images/default_image.png';
 
         return $this->render('profile/index.html.twig', [
-            'form' => $form->createView(),
+            'form' => $formImage->createView(),       // Make sure 'form' is passed
+            'formGender' => $formGender->createView(), // And so is 'formGender'
             'profileImage' => $profileImageFilename,
         ]);
     }

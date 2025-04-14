@@ -3,21 +3,17 @@
 {% block title %}Profile
 {% endblock %}
 
-
 {% block body %}
 
-
-	{% if is_granted('ROLE_ADMIN')%}
-		<a href="{{path('app_admin')}}">X</a>
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="{{ path('app_admin') }}">X</a>
 	{% else %}
-		<a href="{{path('app_user')}}">X</a>
+		<a href="{{ path('app_user') }}">X</a>
 	{% endif %}
-
 
 	<h1>Your Profile</h1>
 
 	<!-- Display current profile image with cache-busting query parameter -->
-	<img src="{{ asset('uploads/profile_images/' ~ (app.user.profileImage ? app.user.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 50px; height: 50px; border-radius: 50%;">
 
 	<h2>Update Profile Image</h2>
 
@@ -26,21 +22,33 @@
 
 	<p>Nom d'utilisateur :
 		{{ app.user.username }}</p>
-
-	<p>votre identifiant :
+	<p>Votre identifiant :
 		{{ app.user.id }}</p>
 
-	<p>Votre genre :
-		{{app.user.gender}}</p>
+	<h2>Votre genre :</h2>
+	<p>{{ app.user.gender ?: 'Non défini' }}</p>
 
+	<!-- Gender update form -->
+	{{ form_start(formGender) }}
+	{{ form_row(formGender.gender) }}
+	<button type="submit">Mettre à jour le genre</button>
+	{{ form_end(formGender) }}
+
+	<hr>
+
+	<!-- Profile image update form -->
 	{{ form_start(form) }}
+	<p>Image actuelle :</p>
+	<img src="{{ asset('uploads/profile_images/' ~ (app.user.profileImage ?: 'default_image.png')) }}" alt="Image de profil" style="width: 100px; height: 100px; border-radius: 50%;">
+
 	{{ form_row(form.profile_image) }}
-	<button type="submit">Télécharger une nouvelle image</button>
+
+	<button type="submit">Mettre à jour</button>
 	{{ form_end(form) }}
 
+	<hr>
+
 	<!-- Add delete account form -->
-
-
 	<h2>Supprimer le compte</h2>
 	<form action="{{ path('delete_account') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
 		<p>Êtes-vous sûr de vouloir supprimer votre compte ?</p>
