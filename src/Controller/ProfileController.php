@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Form\ProfileImageType;
 use App\Form\GenderType;
+use App\Form\EditProfileFormType;
 use App\Entity\Members;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
+
 
 class ProfileController extends AbstractController
 {
@@ -39,6 +41,9 @@ class ProfileController extends AbstractController
 
         $formGender = $this->createForm(GenderType::class, $user);
         $formGender->handleRequest($request);
+
+        $formUsername = $this->createForm(EditProfileFormType::class, $user);
+        $formUsername->handleRequest($request);
 
         // Handling profile image update
         if ($formImage->isSubmitted() && $formImage->isValid()) {
@@ -76,10 +81,18 @@ class ProfileController extends AbstractController
         // Get the profile image filename
         $profileImageFilename = $user->getProfileImage() ? 'uploads/profile_images/' . $user->getProfileImage() : 'uploads/profile_images/default_image.png';
 
+        if ($formUsername->isSubmitted() && $formUsername->isValid()) {
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Nom d\'utilisateur mis à jour avec succès !');
+            return $this->redirectToRoute('profile');
+        }
+
         return $this->render('profile/index.html.twig', [
             'form' => $formImage->createView(),       // Make sure 'form' is passed
             'formGender' => $formGender->createView(), // And so is 'formGender'
             'profileImage' => $profileImageFilename,
+            'formUsername' =>$formUsername->createView(),
         ]);
+
     }
 }

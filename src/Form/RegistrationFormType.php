@@ -38,14 +38,22 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Adresse e-mail',
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                
+                'label' => 'J\'accepte de respecter les règles de l\'application, y compris :',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Vous devez accepter les règles pour vous inscrire.',
                     ]),
                 ],
+                'help' => "• Pas de messages offensants, harcelants ou haineux<br>
+                        • Aucune image inappropriée, violente ou illégale<br>
+                        • Respecter la vie privée des autres membres<br>
+                        • N'envoyez pas de spam ou de publicités<br>
+                        • Vous êtes responsable de ce que vous publiez<br>
+                        • Le non-respect des règles peut entraîner un bannissement",
+                'help_html' => true,
             ])
+
             ->add('gender', ChoiceType::class, [
                     'choices' => [
                         'Male' => 'male',

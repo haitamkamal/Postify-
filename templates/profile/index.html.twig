@@ -28,13 +28,6 @@
 	<h2>Votre genre :</h2>
 	<p>{{ app.user.gender ?: 'Non défini' }}</p>
 
-	<!-- Gender update form -->
-	{{ form_start(formGender) }}
-	{{ form_row(formGender.gender) }}
-	<button type="submit">Mettre à jour le genre</button>
-	{{ form_end(formGender) }}
-
-	<hr>
 
 	<!-- Profile image update form -->
 	{{ form_start(form) }}
@@ -47,6 +40,23 @@
 	{{ form_end(form) }}
 
 	<hr>
+
+	<!-- Profile username update form -->
+
+	<h2>Changer le nom d'utilisateur</h2>
+	{{ form_start(formUsername) }}
+	{{ form_row(formUsername.username) }}
+	<button class="btn btn-primary">Mettre à jour</button>
+	{{ form_end(formUsername) }}
+
+	<!-- Gender update form -->
+	{{ form_start(formGender) }}
+	{{ form_row(formGender.gender) }}
+	<button type="submit">Mettre à jour le genre</button>
+	{{ form_end(formGender) }}
+
+	<hr>
+
 
 	<!-- Add delete account form -->
 	<h2>Supprimer le compte</h2>
