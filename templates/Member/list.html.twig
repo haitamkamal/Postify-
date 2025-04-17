@@ -1,8 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<h1>Members List</h1>
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="{{ path('app_admin') }}">X</a>
 
+	{% else %}
+		<a href="{{ path('app_user') }}">X</a>
+	{% endif %}
+
+	<h1>Liste d'amis</h1>
 	<ul>
 		{% for member in members %}
 			<li>

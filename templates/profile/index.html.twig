@@ -7,6 +7,7 @@
 
 	{% if is_granted('ROLE_ADMIN') %}
 		<a href="{{ path('app_admin') }}">X</a>
+
 	{% else %}
 		<a href="{{ path('app_user') }}">X</a>
 	{% endif %}
