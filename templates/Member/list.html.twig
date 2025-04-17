@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Members List</h1>
+
+	<ul>
+		{% for member in members %}
+			<li>
+				<a href="{{ path('member_profile', {id: member.id}) }}">
+					{% if member == app.user %}
+						<strong style="color: blue;">{{ member.username }}
+							(You)</strong>
+					{% else %}
+						{{ member.username }}
+					{% endif %}
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

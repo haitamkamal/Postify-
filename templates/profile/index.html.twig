@@ -15,7 +15,6 @@
 
 	<!-- Display current profile image with cache-busting query parameter -->
 
-	<h2>Update Profile Image</h2>
 
 	Vous êtes connecté en tant que :
 	{{ app.user.userIdentifier }}<br>
@@ -30,6 +29,8 @@
 
 
 	<!-- Profile image update form -->
+	<h2>Update Profile Image</h2>
+
 	{{ form_start(form) }}
 	<p>Image actuelle :</p>
 	<img src="{{ asset('uploads/profile_images/' ~ (app.user.profileImage ?: 'default_image.png')) }}" alt="Image de profil" style="width: 100px; height: 100px; border-radius: 50%;">

@@ -45,4 +45,21 @@ userInfo.style.display = userInfo.style.display === "none" ? "block" : "none";
 		</script>
 	{% endif %}
 
+	<hr>
+	<h2>Liste des Membres</h2>
+	<div style="display: flex; flex-wrap: wrap; gap: 15px;">
+		{% for member in members %}
+			<div style="text-align: center;">
+				<img src="{{ asset('uploads/profile_images/' ~ (member.profileImage ? member.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 60px; height: 60px; border-radius: 50%;">
+				<p>{{ member.username }}
+					{% if member.id == app.user.id %}
+						(moi)
+					{% endif %}
+				</p>
+				<a href="{{ path('member_profile', {'id': member.id}) }}">Voir profil</a><br>
+				<button disabled>Envoyer un message</button>
+			</div>
+		{% endfor %}
+	</div>
+
 {% endblock %}

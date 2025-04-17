@@ -5,10 +5,16 @@
 {% endblock %}
 
 {% block body %}
-	<h1>bonjour</h1>
+	<h1>Bonjour</h1>
+	<h3>👋 Bienvenue sur notre plateforme !
+		<em>Rejoignez notre communauté pour discuter, échanger des messages et rester connecté avec vos amis en toute simplicité.
+							Créez un compte ou connectez-vous pour commencer l’aventure !<em>
 
-	<a href="{{ path('app_register') }}">S'inscrire</a>
-	<a href="{{ path('app_login') }}">se connecter</a>
+				<h4>🔐 Connexion sécurisée — 💬 Messagerie instantanée — 🤝 Facile à utiliser</h4>
+			</h3>
+
+			<a href="{{ path('app_register') }}">S'inscrire</a>
+			<a href="{{ path('app_login') }}">se connecter</a>
 
 
-{% endblock %}
+		{% endblock %}

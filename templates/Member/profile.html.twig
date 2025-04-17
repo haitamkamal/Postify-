@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	{% if is_granted ('ROLE_ADMIN') %}
+		<a href="{{ path('app_admin') }}">X</a>
+	{% else %}
+		<a href="{{ path('app_user') }}">X</a>
+	{% endif %}
+
+	<h1>{{ member.username }}'s Profile</h1>
+	<p>Nom d'utilisateur :
+		{{ app.user.username }}</p>
+
+	<p>
+		Rôle:
+		{% if 'ROLE_ADMIN' in app.user.roles %}
+			{{ app.user.gender == 'female' ? 'administratrice' : 'administrateur' }}
+		{% else %}
+			{{ app.user.gender == 'female' ? 'utilisatrice' : 'utilisateur' }}
+		{% endif %}
+	</p>
+
+	<p>Email:
+		{{ member.email }}</p>
+
+	<p>Gender:
+		{{ member.gender | default('Not provided') }}</p>
+	<p>Profile Image:
+		{% if member.profileImage %}
+			<img src="{{ asset('uploads/profile_images/' ~ member.profileImage) }}" alt="Profile Image" style="width: 100px; height: 100px; border-radius: 50%;">
+
+		{% else %}
+			<img src="{{ asset('uploads/profile_images/default_image.png') }}" alt="Profile Image" style="width: 100px; height: 100px; border-radius: 50%;">
+
+		{% endif %}
+	</p>
+
+
+{% endblock %}
