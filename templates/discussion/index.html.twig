@@ -20,20 +20,36 @@
 					<div style="padding: 10px; background-color: {{ message.sender.username == app.user.username ? '#dcf8c6' : '#fff' }}; border: 1px solid #ccc; border-radius: 10px; max-width: 70%;">
 						<strong>{{ message.sender.username == app.user.username ? 'Moi' : message.sender.username }}:</strong><br>
 						{{ message.message }}<br>
+						{% if message.image %}
+							<img src="{{ asset('uploads/messages/' ~ message.image) }}" alt="Image" style="max-width: 200px; max-height: 200px; margin-top: 10px;">
+						{% endif %}
 						<small style="color: grey;">{{ message.createdAt|date('H:i') }}</small>
 					</div>
 				</div>
 			{% endfor %}
 		</div>
 
-		<!-- WhatsApp-style Input Bar -->
-		<form method="post" style="display: flex; padding: 10px; border-top: 1px solid #ccc; background-color: #fff;">
+		<!-- Input Bar -->
+		<form method="post" enctype="multipart/form-data" style="display: flex; padding: 10px; border-top: 1px solid #ccc; background-color: #fff; align-items: center;">
 			<textarea name="message" rows="1" style="flex: 1; resize: none; border: 1px solid #ccc; border-radius: 20px; padding: 10px 15px; margin-right: 10px;" placeholder="Écris ton message..."></textarea>
+
+			<!-- Image Upload Button -->
+			<label for="profileImage" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+				📷
+			</label>
+			<input
+			type="file" id="profileImage" name="image" accept="image/*" style="display: none;">
+
+			<!-- Submit Button -->
 			<button type="submit" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-weight: bold; cursor: pointer;">➤</button>
 		</form>
 	</div>
 
 	<div style="text-align: center; margin-top: 10px;">
-		<a href="{{ path('app_user') }}" style="color: #007BFF;">← Retour</a>
+		{% if is_granted('ROLE_ADMIN') %}
+			<a href="{{ path('app_admin') }}">← Retour</a>
+		{% else %}
+			<a href="{{ path('app_user') }}">← Retour</a>
+		{% endif %}
 	</div>
 {% endblock %}

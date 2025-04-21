@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Attribute\Route;
 
 class DiscussionController extends AbstractController
@@ -23,17 +25,42 @@ class DiscussionController extends AbstractController
         // Create a new message if the form was submitted
         if ($request->isMethod('POST')) {
             $message = trim($request->request->get('message'));
-            if (!empty($message)) {
+            $image = $request->files->get('image'); // Handle the image upload
+
+            if (!empty($message) || $image) {
                 $discussion = new Discussion();
                 $discussion->setSender($currentUser);
                 $discussion->setReceiver($member);
                 $discussion->setMessage($message);
                 $discussion->setCreatedAt(new \DateTimeImmutable());
 
+                // Handle image upload if present
+                if ($image instanceof UploadedFile) {
+                    // Generate a unique file name
+                    $imageFilename = uniqid() . '.' . $image->guessExtension();
+
+                    // Move the uploaded image to the 'public/uploads/messages' folder
+                    try {
+                        $image->move(
+                            $this->getParameter('kernel.project_dir') . '/public/uploads/messages',
+                            $imageFilename
+                        );
+                    } catch (FileException $e) {
+                        // Handle exception if something goes wrong
+                        $this->addFlash('error', 'Unable to upload image');
+                        return $this->redirectToRoute('app_discussion', ['id' => $member->getId()]);
+                    }
+
+                    // Save the image filename in the discussion
+                    $discussion->setImage($imageFilename);
+                }
+
+                // Persist the message in the database
                 $em->persist($discussion);
                 $em->flush();
             }
 
+            // Redirect back to the discussion page
             return $this->redirectToRoute('app_discussion', ['id' => $member->getId()]);
         }
 
@@ -47,6 +74,7 @@ class DiscussionController extends AbstractController
             ->getQuery()
             ->getResult();
 
+        // Render the template with discussions and member data
         return $this->render('discussion/index.html.twig', [
             'member' => $member,
             'discussions' => $discussions,
