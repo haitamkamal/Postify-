@@ -4,24 +4,28 @@
 {% endblock %}
 
 {% block body %}
-
 	{% if app.user %}
-		<div
-			class="mb-3">
-			<!-- Display the user's profile image (default or custom) -->
+		<!-- User Info Box -->
+		<div class="mb-3">
 			<a href="#" onclick="toggleUserInfo(event)">
 				<img src="{{ asset('uploads/profile_images/' ~ (app.user.profileImage ? app.user.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 60px; height: 60px; border-radius: 50%;">
-
-
 			</a>
 
-			<div id="user-info" style="display: none; margin-top: 10px;">
-
-				<a href="{{ path('profile') }}">Paramètre</a><br>
-				<a href="{{ path('app_logout') }}">Déconnexion</a>
+			<div
+				id="user-info" style="display: none; margin-top: 10px;">
+				<!-- Become Admin -->
+				<a href="{{ path('upgrade_to_admin') }}">
+					<img src="{{ asset('uploads/profile_images/admin-alt.png') }}" alt="Prendre Vip" title="Prendre Vip" style="width: 30px; height: 30px; border-radius: 20%; cursor: pointer;">
+				</a>
+				<br>
+				<!-- Logout -->
+				<a href="{{ path('app_logout') }}">
+					<img src="{{ asset('uploads/profile_images/exit.png') }}" alt="Déconnexion" title="Déconnexion" style="width: 30px; height: 30px; border-radius: 20%; cursor: pointer;">
+				</a>
 			</div>
 		</div>
 
+		<!-- User Details -->
 		<div>
 			<p>Nom d'utilisateur :
 				{{ app.user.username }}</p>
@@ -34,37 +38,60 @@
 					{{ app.user.gender == 'female' ? 'utilisatrice' : 'utilisateur' }}
 				{% endif %}
 			</p>
-			<a href="{{ path('upgrade_to_admin') }}">Prendre VIP</a><br>
 
+			<!-- Profile Settings -->
+			<a href="{{ path('profile') }}">
+				<img src="{{ asset('uploads/profile_images/settings.png') }}" alt="paramètres" title="paramètres" style="width: 30px; height: 30px; border-radius: 20%;">
+			</a>
 		</div>
-		<a href="{{path('member_list')}}">Voir tes amis</a>
 
+		<!-- Friends Link -->
+		<a href="{{ path('member_list') }}">
+			<img src="{{ asset('uploads/profile_images/friends_icon.png') }}" alt="Voir tes amis" title="Voir tes amis" style="width: 30px; height: 30px; border-radius: 20%;">
+		</a>
 
+		<!-- Scripts -->
 		<script>
 			function toggleUserInfo(event) {
 event.preventDefault();
-let userInfo = document.getElementById("user-info");
+const userInfo = document.getElementById("user-info");
 userInfo.style.display = userInfo.style.display === "none" ? "block" : "none";
+}
+
+function toggleMemberInfo(event, id) {
+event.preventDefault();
+const memberInfo = document.getElementById("member-info-" + id);
+if (memberInfo) {
+memberInfo.style.display = memberInfo.style.display === "none" ? "block" : "none";
+}
 }
 		</script>
 	{% endif %}
 
 	<hr>
-	<h2>Liste des Membres</h2>
+
+	<!-- Member List -->
+	<h2>Discussion</h2>
 	<div style="display: flex; flex-wrap: wrap; gap: 15px;">
 		{% for member in members %}
 			<div style="text-align: center;">
-				<img src="{{ asset('uploads/profile_images/' ~ (member.profileImage ? member.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 60px; height: 60px; border-radius: 50%;">
-				<p>{{ member.username }}
+				<a href="#" onclick="toggleMemberInfo(event, {{ member.id }})">
+					<img src="{{ asset('uploads/profile_images/' ~ (member.profileImage ? member.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 60px; height: 60px; border-radius: 50%;">
+				</a>
+
+				<div id="member-info-{{ member.id }}" style="display: none; margin-top: 10px;">
+					<a href="#">Envoi message</a>
+				</div>
+
+				<p>
+					<a href="{{ path('member_profile', {'id': member.id}) }}" style="text-decoration: none; color: inherit;">
+						{{ member.username }}
+					</a>
 					{% if member.id == app.user.id %}
 						(moi)
 					{% endif %}
 				</p>
-				<a href="{{ path('member_profile', {'id': member.id}) }}">Voir profil</a><br>
-
 			</div>
 		{% endfor %}
 	</div>
-
-
 {% endblock %}

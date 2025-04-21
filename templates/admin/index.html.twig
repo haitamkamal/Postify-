@@ -8,17 +8,16 @@
 	{% if app.user %}
 		<div
 			class="mb-3">
-			<!-- Display the user's profile image (default or custom) -->
+			<!-- User's profile image -->
 			<a href="#" onclick="toggleUserInfo(event)">
 				<img src="{{ asset('uploads/profile_images/' ~ (app.user.profileImage ? app.user.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 60px; height: 60px; border-radius: 50%;">
-
-
 			</a>
 
 			<div id="user-info" style="display: none; margin-top: 10px;">
+				<a href="{{ path('app_logout') }}">
+					<img src="{{ asset('uploads/profile_images/exit.png') }}" alt="déconnexion" title="Déconnexion" style="width: 40px; height: 40px; border-radius: 50%; cursor:pointer;">
 
-				<a href="{{ path('profile') }}">Paramètre</a><br>
-				<a href="{{ path('app_logout') }}">Déconnexion</a>
+				</a>
 			</div>
 		</div>
 
@@ -33,34 +32,66 @@
 					{{ app.user.gender == 'female' ? 'utilisatrice' : 'utilisateur' }}
 				{% endif %}
 			</p>
-
 		</div>
-		<a href="{{path('member_list')}}">Voir tes amis</a>
 
-		<script>
-			function toggleUserInfo(event) {
-event.preventDefault();
-let userInfo = document.getElementById("user-info");
-userInfo.style.display = userInfo.style.display === "none" ? "block" : "none";
-}
-		</script>
+		<a href="{{ path('member_list') }}">
+			<img src="{{ asset('uploads/profile_images/friends_icon.png') }}" alt="Voir tes amis" title="Voir tes amis" style="width: 40px; height: 40px; border-radius: 20%;">
+
+		</a>
+
+		<br>
 	{% endif %}
 
+	<a href="{{ path('profile') }}">
+		<img src="{{ asset('uploads/profile_images/settings.png') }}" alt="paramètres" title="paramètres" style="width: 40px; height: 40px; border-radius: 50%;">
+
+	</a>
+	<br>
+
+
 	<hr>
-	<h2>Liste des Membres</h2>
+
+	<h2>Discussion</h2>
+
+
 	<div style="display: flex; flex-wrap: wrap; gap: 15px;">
 		{% for member in members %}
 			<div style="text-align: center;">
-				<img src="{{ asset('uploads/profile_images/' ~ (member.profileImage ? member.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 60px; height: 60px; border-radius: 50%;">
-				<p>{{ member.username }}
+				<a href="#" onclick="toggleMemberInfo(event, {{ member.id }})">
+					<img src="{{ asset('uploads/profile_images/' ~ (member.profileImage ? member.profileImage : 'default_image.png')) }}" alt="Profile Image" style="width: 60px; height: 60px; border-radius: 50%;">
+				</a>
+
+				<div id="member-info-{{ member.id }}" style="display: none; margin-top: 10px;">
+					<a href="{{ path('member_profile', {'id': member.id}) }}">Voir profil</a><br>
+					<a href="#">Envoi message</a>
+				</div>
+
+				<p>
+					{{ member.username }}
 					{% if member.id == app.user.id %}
 						(moi)
 					{% endif %}
 				</p>
-				<a href="{{ path('member_profile', {'id': member.id}) }}">Voir profil</a><br>
-				<button disabled>Envoyer un message</button>
 			</div>
 		{% endfor %}
+
+
 	</div>
+
+	<script>
+		function toggleUserInfo(event) {
+event.preventDefault();
+const userInfo = document.getElementById("user-info");
+userInfo.style.display = userInfo.style.display === "none" ? "block" : "none";
+}
+
+function toggleMemberInfo(event, id) {
+event.preventDefault();
+const memberInfo = document.getElementById("member-info-" + id);
+if (memberInfo) {
+memberInfo.style.display = memberInfo.style.display === "none" ? "block" : "none";
+}
+}
+	</script>
 
 {% endblock %}
