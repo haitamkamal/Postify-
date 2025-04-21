@@ -15,7 +15,7 @@
 
 			<div id="user-info" style="display: none; margin-top: 10px;">
 				<a href="{{ path('app_logout') }}">
-					<img src="{{ asset('uploads/profile_images/exit.png') }}" alt="déconnexion" title="Déconnexion" style="width: 40px; height: 40px; border-radius: 50%; cursor:pointer;">
+					<img src="{{ asset('uploads/profile_images/exit.png') }}" alt="déconnexion" title="Déconnexion" style="width: 30px; height: 30px; border-radius: 20%; cursor:pointer;">
 
 				</a>
 			</div>
@@ -24,18 +24,10 @@
 		<div>
 			<p>Nom d'utilisateur :
 				{{ app.user.username }}</p>
-			<p>
-				Rôle:
-				{% if 'ROLE_ADMIN' in app.user.roles %}
-					{{ app.user.gender == 'female' ? 'administratrice' : 'administrateur' }}
-				{% else %}
-					{{ app.user.gender == 'female' ? 'utilisatrice' : 'utilisateur' }}
-				{% endif %}
-			</p>
 		</div>
 
 		<a href="{{ path('member_list') }}">
-			<img src="{{ asset('uploads/profile_images/friends_icon.png') }}" alt="Voir tes amis" title="Voir tes amis" style="width: 40px; height: 40px; border-radius: 20%;">
+			<img src="{{ asset('uploads/profile_images/friends_icon.png') }}" alt="Voir tes amis" title="Voir tes amis" style="width: 30px; height: 30px; border-radius: 20%;">
 
 		</a>
 
@@ -43,7 +35,7 @@
 	{% endif %}
 
 	<a href="{{ path('profile') }}">
-		<img src="{{ asset('uploads/profile_images/settings.png') }}" alt="paramètres" title="paramètres" style="width: 40px; height: 40px; border-radius: 50%;">
+		<img src="{{ asset('uploads/profile_images/settings.png') }}" alt="paramètres" title="paramètres" style="width: 30px; height: 30px; border-radius: 20%;">
 
 	</a>
 	<br>
@@ -62,16 +54,20 @@
 				</a>
 
 				<div id="member-info-{{ member.id }}" style="display: none; margin-top: 10px;">
-					<a href="{{ path('member_profile', {'id': member.id}) }}">Voir profil</a><br>
-					<a href="#">Envoi message</a>
+					<a href="{{path('app_discussion',{'id': member.id}) }}">Envoi message</a>
+
+
 				</div>
 
 				<p>
-					{{ member.username }}
+					<a href="{{ path('member_profile', {'id': member.id}) }}" style="text-decoration: none; color: inherit;">
+						{{ member.username }}
+					</a>
 					{% if member.id == app.user.id %}
 						(moi)
 					{% endif %}
 				</p>
+
 			</div>
 		{% endfor %}
 

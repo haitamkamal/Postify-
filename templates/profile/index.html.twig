@@ -22,6 +22,16 @@
 
 	<p>Nom d'utilisateur :
 		{{ app.user.username }}</p>
+
+	<p>
+		Rôle:
+		{% if 'ROLE_ADMIN' in app.user.roles %}
+			{{ app.user.gender == 'female' ? 'administratrice' : 'administrateur' }}
+		{% else %}
+			{{ app.user.gender == 'female' ? 'utilisatrice' : 'utilisateur' }}
+		{% endif %}
+	</p>
+
 	<p>Votre identifiant :
 		{{ app.user.id }}</p>
 

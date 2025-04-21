@@ -30,14 +30,6 @@
 			<p>Nom d'utilisateur :
 				{{ app.user.username }}</p>
 
-			<p>
-				Rôle:
-				{% if 'ROLE_ADMIN' in app.user.roles %}
-					{{ app.user.gender == 'female' ? 'administratrice' : 'administrateur' }}
-				{% else %}
-					{{ app.user.gender == 'female' ? 'utilisatrice' : 'utilisateur' }}
-				{% endif %}
-			</p>
 
 			<!-- Profile Settings -->
 			<a href="{{ path('profile') }}">
@@ -80,7 +72,9 @@ memberInfo.style.display = memberInfo.style.display === "none" ? "block" : "none
 				</a>
 
 				<div id="member-info-{{ member.id }}" style="display: none; margin-top: 10px;">
-					<a href="#">Envoi message</a>
+					<a href="{{path('app_discussion',{'id': member.id}) }}">Envoi message</a>
+
+
 				</div>
 
 				<p>

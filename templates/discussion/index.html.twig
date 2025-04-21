@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discussion avec
+	{{ member.username }}
+{% endblock %}
+
+{% block body %}
+	<h2 style="text-align: center; margin-bottom: 10px;">
+		Discussion avec
+		{{ member.username }}
+	</h2>
+
+	<div
+		style="max-width: 600px; margin: 0 auto; border: 1px solid #ccc; border-radius: 10px; height: 80vh; display: flex; flex-direction: column; background-color: #f9f9f9;">
+
+		<!-- Chat Messages Area -->
+		<div style="flex: 1; padding: 15px; overflow-y: auto;">
+			{% for message in discussions %}
+				<div style="margin: 10px 0; display: flex; flex-direction: column; align-items: {{ message.sender.username == app.user.username ? 'flex-end' : 'flex-start' }};">
+					<div style="padding: 10px; background-color: {{ message.sender.username == app.user.username ? '#dcf8c6' : '#fff' }}; border: 1px solid #ccc; border-radius: 10px; max-width: 70%;">
+						<strong>{{ message.sender.username == app.user.username ? 'Moi' : message.sender.username }}:</strong><br>
+						{{ message.message }}<br>
+						<small style="color: grey;">{{ message.createdAt|date('H:i') }}</small>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+		<!-- WhatsApp-style Input Bar -->
+		<form method="post" style="display: flex; padding: 10px; border-top: 1px solid #ccc; background-color: #fff;">
+			<textarea name="message" rows="1" style="flex: 1; resize: none; border: 1px solid #ccc; border-radius: 20px; padding: 10px 15px; margin-right: 10px;" placeholder="Écris ton message..."></textarea>
+			<button type="submit" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-weight: bold; cursor: pointer;">➤</button>
+		</form>
+	</div>
+
+	<div style="text-align: center; margin-top: 10px;">
+		<a href="{{ path('app_user') }}" style="color: #007BFF;">← Retour</a>
+	</div>
+{% endblock %}

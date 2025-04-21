@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MembersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -41,6 +43,17 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $profileImage = 'default_image.png';
+
+    /**
+     * @var Collection<int, Discussion>
+     */
+    #[ORM\OneToMany(targetEntity: Discussion::class, mappedBy: 'sender')]
+    private Collection $discussions;
+
+    public function __construct()
+    {
+        $this->discussions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -159,5 +172,35 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
             $this->roles[] = 'ROLE_ADMIN';
             $this->roles = array_unique($this->roles);
         }
+    }
+
+    /**
+     * @return Collection<int, Discussion>
+     */
+    public function getDiscussions(): Collection
+    {
+        return $this->discussions;
+    }
+
+    public function addDiscussion(Discussion $discussion): static
+    {
+        if (!$this->discussions->contains($discussion)) {
+            $this->discussions->add($discussion);
+            $discussion->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscussion(Discussion $discussion): static
+    {
+        if ($this->discussions->removeElement($discussion)) {
+            // set the owning side to null (unless already changed)
+            if ($discussion->getSender() === $this) {
+                $discussion->setSender(null);
+            }
+        }
+
+        return $this;
     }
 }
