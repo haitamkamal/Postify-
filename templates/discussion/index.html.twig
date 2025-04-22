@@ -35,7 +35,7 @@
 
 			<!-- Image Upload Button -->
 			<label for="profileImage" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; cursor: pointer;">
-				<img src="{{ asset('uploads/profile_images/add-image.png') }}" alt="Upload Image" title="Upload Image" style="width: 30px; height: 30px; border-radius: 20%;">
+				<img src="{{ asset('uploads/images/add-image.png') }}" alt="Upload Image" title="Upload Image" style="width: 30px; height: 30px; border-radius: 20%;">
 
 
 			</label>
@@ -44,10 +44,8 @@
 
 			<!-- Submit Button -->
 			<button type="submit" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-weight: bold; cursor: pointer; position: relative;">
-				<img src="{{ asset('uploads/profile_images/paper-plane.png') }}" alt="send message" title="send message" style="width: 30px; height: 30px; border-radius: 20%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+				<img src="{{ asset('uploads/images/paper-plane.png') }}" alt="send message" title="send message" style="width: 30px; height: 30px; border-radius: 20%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
 			</button>
-
-
 		</form>
 	</div>
 
@@ -58,4 +56,24 @@
 			<a href="{{ path('app_user') }}">← Retour</a>
 		{% endif %}
 	</div>
+
+	<!-- Sidebar (List of Members) -->
+	<div style="width: 25%; padding: 10px; background-color: #f1f1f1; border-right: 1px solid #ccc; overflow-y: auto;">
+		<h3>Utilisateurs</h3>
+		<ul style="list-style: none; padding: 0;">
+			{% for member in members %}
+				<li style="margin-bottom: 15px; display: flex; align-items: center;">
+					{% if member.profileImage %}
+						<img src="{{ asset('uploads/profile_images/' ~ member.profileImage) }}" alt="{{ member.username }}'s profile image" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+					{% else %}
+						<img src="{{ asset('uploads/profile_images/default-avatar.png') }}" alt="default avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+					{% endif %}
+					<a href="{{ path('app_discussion', { 'id': member.id }) }}" style="text-decoration: none; color: black;">
+						{{ member.username }}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+
 {% endblock %}

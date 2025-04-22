@@ -5,9 +5,14 @@
 
 {% block body %}
 	<h1>Register</h1>
-	<a href="{{ path('connect_google') }}">Connectez-vous avec Google</a><br>
+	<a href="{{ path('connect_google') }}">
+		<img src="{{ asset('uploads/images/google.png') }}" alt="google" title="google" style="width: 40px; height: 40px; border-radius: 20%; cursor:pointer;">
+	</a>
 
-	<a href="{{ path('connect_github') }}">Connectez-vous avec GitHub</a>
+
+	<a href="{{ path('connect_github') }}">
+		<img src="{{ asset('uploads/images/github.png') }}" alt="github" title="github" style="width: 40px; height: 40px; border-radius: 20%; cursor:pointer;">
+	</a>
 
 
 	{{ form_errors(registrationForm) }}

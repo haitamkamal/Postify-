@@ -5,16 +5,34 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Bonjour</h1>
-	<h3>👋 Bienvenue sur notre plateforme !
-		<em>Rejoignez notre communauté pour discuter, échanger des messages et rester connecté avec vos amis en toute simplicité.
-							Créez un compte ou connectez-vous pour commencer l’aventure !<em>
+	<div class="intro-container">
+		<h2>Bienvenue sur notre application de messagerie !</h2>
+		<p>Vous venez de rejoindre notre plateforme de discussion où vous pouvez rester connecté avec vos amis et collègues. Voici ce que vous pouvez faire :</p>
 
-				<h4>🔐 Connexion sécurisée — 💬 Messagerie instantanée — 🤝 Facile à utiliser</h4>
-			</h3>
+		<ul>
+			<li>
+				<strong>Envoyer des messages :</strong>
+				Discutez en temps réel avec vos amis, partagez vos idées, vos pensées, ou même des photos.</li>
+			<li>
+				<strong>Envoyer des images :</strong>
+				Enrichissez vos conversations en ajoutant des images à vos messages.</li>
+			<li>
+				<strong>Consulter les messages :</strong>
+				Accédez facilement à l’historique de vos discussions et restez à jour avec vos conversations.</li>
+			<li>
+				<strong>Trouver des utilisateurs :</strong>
+				Explorez les membres de la communauté et commencez des discussions avec eux à tout moment.</li>
+		</ul>
 
-			<a href="{{ path('app_register') }}">S'inscrire</a>
-			<a href="{{ path('app_login') }}">se connecter</a>
+		<p>Nous espérons que vous passerez un excellent moment à utiliser l’application, et que vous trouverez facilement vos amis pour discuter. N'hésitez pas à nous contacter si vous avez des questions ou des suggestions !</p>
+	</div>
 
 
-		{% endblock %}
+	<img src="{{ asset('uploads/images/ChatGPT Image 22 avr. 2025, 11_36_26.png') }}" style="width:500px ; height:500px border ">
+
+
+	<a href="{{ path('app_register') }}">S'inscrire</a>
+	<a href="{{ path('app_login') }}">se connecter</a>
+
+
+{% endblock %}

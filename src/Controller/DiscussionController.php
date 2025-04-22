@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Discussion;
@@ -10,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DiscussionController extends AbstractController
 {
@@ -22,22 +21,24 @@ class DiscussionController extends AbstractController
     ): Response {
         $currentUser = $this->getUser(); // the logged-in member
 
+        // Fetch all members to display in the sidebar
+        $members = $em->getRepository(Members::class)->findAll();
+
         // Create a new message if the form was submitted
         if ($request->isMethod('POST')) {
-         // 🚫 Ban check for logged-in user
-        if (
+            // 🚫 Ban check for logged-in user
+            if (
                 $currentUser instanceof Members &&
                 $currentUser->getIsBanned() &&
                 (
                     $currentUser->getBanUntil() === null ||
                     $currentUser->getBanUntil() > new \DateTime()
                 )
-        ) {
+            ) {
                 $this->addFlash('error', 'You are banned and cannot send messages.');
                 return $this->redirectToRoute('app_discussion', ['id' => $member->getId()]);
-        }
+            }
 
-            
             $message = trim($request->request->get('message'));
             $image = $request->files->get('image'); // Handle the image upload
 
@@ -88,10 +89,11 @@ class DiscussionController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        // Render the template with discussions and member data
+        // Render the template with discussions, member data, and all members
         return $this->render('discussion/index.html.twig', [
             'member' => $member,
             'discussions' => $discussions,
+            'members' => $members, // Pass the members here
         ]);
     }
 }
