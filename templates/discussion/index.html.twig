@@ -35,13 +35,19 @@
 
 			<!-- Image Upload Button -->
 			<label for="profileImage" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; cursor: pointer;">
-				📷
+				<img src="{{ asset('uploads/profile_images/add-image.png') }}" alt="Upload Image" title="Upload Image" style="width: 30px; height: 30px; border-radius: 20%;">
+
+
 			</label>
 			<input
 			type="file" id="profileImage" name="image" accept="image/*" style="display: none;">
 
 			<!-- Submit Button -->
-			<button type="submit" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-weight: bold; cursor: pointer;">➤</button>
+			<button type="submit" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-weight: bold; cursor: pointer; position: relative;">
+				<img src="{{ asset('uploads/profile_images/paper-plane.png') }}" alt="send message" title="send message" style="width: 30px; height: 30px; border-radius: 20%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+			</button>
+
+
 		</form>
 	</div>
 

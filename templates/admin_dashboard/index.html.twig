@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard
+{% endblock %}
+
+{% block body %}
+	<a href="{{ path('app_admin') }}">X</a>
+	<h2>Admin Dashboard</h2>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Status</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.username }}</td>
+					<td>
+						{% if user.isBanned %}
+							<span style="color: red;">BANNED</span>
+						{% else %}
+							Active
+						{% endif %}
+					</td>
+					<td>
+						{% if user.isBanned %}
+							<a href="{{ path('admin_unban', { 'id': user.id }) }}" class="btn btn-success btn-sm">Unban</a>
+						{% else %}
+							<a href="{{ path('admin_ban_user', { 'id': user.id }) }}" class="btn btn-warning btn-sm">Ban</a>
+						{% endif %}
+
+						<a href="{{ path('admin_edit_user', { 'id': user.id }) }}" class="btn btn-info btn-sm">Edit</a>
+
+						<form method="post" action="{{ path('admin_delete_user', { 'id': user.id }) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+							<button class="btn btn-danger btn-sm">Delete</button>
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

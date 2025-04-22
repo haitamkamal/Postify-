@@ -1,0 +1,18 @@
+{# templates/admin/edit_user.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User
+{% endblock %}
+
+{% block body %}
+	<a href="{{ path('app_admin') }}">X</a>
+	<h2>Edit
+		{{ user.username }}</h2>
+
+	<form method="POST">
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username" value="{{ user.username }}" required>
+
+		<button type="submit">Save Changes</button>
+	</form>
+{% endblock %}

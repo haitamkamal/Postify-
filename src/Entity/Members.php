@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\MembersRepository;
@@ -26,29 +25,26 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    #[ORM\Column( type:'string' ,length:20 , nullable:true )]
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private ?string $gender = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */ 
     #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $profileImage = 'default_image.png';
 
-    /**
-     * @var Collection<int, Discussion>
-     */
     #[ORM\OneToMany(targetEntity: Discussion::class, mappedBy: 'sender')]
     private Collection $discussions;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isBanned = false;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $banUntil = null;
 
     public function __construct()
     {
@@ -72,7 +68,7 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-        public function getUsername(): ?string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -83,36 +79,25 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGender (): ?string 
+    public function getGender(): ?string 
     {
-        return $this-> gender;
+        return $this->gender;
     }
 
-    public function setGender (?string $gender):static
+    public function setGender(?string $gender): static
     {
         $this->gender = $gender;
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     *
-     * @return list<string>
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         if (!in_array('ROLE_USER', $roles)) {
             $roles[] = 'ROLE_USER';
         }
@@ -121,14 +106,10 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(array $roles): static
     {
-        // Ensure we don't store duplicate ROLE_USER
         $this->roles = array_unique($roles);
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -140,8 +121,8 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
-       public function getProfileImage(): ?string
+
+    public function getProfileImage(): ?string
     {
         return $this->profileImage;
     }
@@ -152,16 +133,11 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
-        public function hasRole(string $role): bool
+    public function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles(), true);
     }
@@ -174,9 +150,6 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
         }
     }
 
-    /**
-     * @return Collection<int, Discussion>
-     */
     public function getDiscussions(): Collection
     {
         return $this->discussions;
@@ -195,12 +168,35 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeDiscussion(Discussion $discussion): static
     {
         if ($this->discussions->removeElement($discussion)) {
-            // set the owning side to null (unless already changed)
             if ($discussion->getSender() === $this) {
                 $discussion->setSender(null);
             }
         }
 
+        return $this;
+    }
+
+    // Getter and Setter for isBanned
+    public function getIsBanned(): bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(bool $isBanned): self
+    {
+        $this->isBanned = $isBanned;
+        return $this;
+    }
+
+    // Getter and Setter for banUntil
+    public function getBanUntil(): ?\DateTimeInterface
+    {
+        return $this->banUntil;
+    }
+
+    public function setBanUntil(?\DateTimeInterface $banUntil): self
+    {
+        $this->banUntil = $banUntil;
         return $this;
     }
 }

@@ -24,6 +24,20 @@ class DiscussionController extends AbstractController
 
         // Create a new message if the form was submitted
         if ($request->isMethod('POST')) {
+         // 🚫 Ban check for logged-in user
+        if (
+                $currentUser instanceof Members &&
+                $currentUser->getIsBanned() &&
+                (
+                    $currentUser->getBanUntil() === null ||
+                    $currentUser->getBanUntil() > new \DateTime()
+                )
+        ) {
+                $this->addFlash('error', 'You are banned and cannot send messages.');
+                return $this->redirectToRoute('app_discussion', ['id' => $member->getId()]);
+        }
+
+            
             $message = trim($request->request->get('message'));
             $image = $request->files->get('image'); // Handle the image upload
 

@@ -16,6 +16,16 @@
 		{% endblock %}
 	</head>
 	<body>
+		{% for label, messages in app.flashes %}
+			<div class="alert alert-{{ label == 'error' ? 'danger' : label }}">
+				{% for message in messages %}
+					{{ message }}
+				{% endfor %}
+			</div>
+		{% endfor %}
+
 		{% block body %}{% endblock %}
 	</body>
+
+
 </html>
