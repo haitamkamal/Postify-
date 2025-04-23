@@ -1,6 +1,8 @@
 # config/packages/framework.yaml
 framework:
     secret: '%env(APP_SECRET)%'
+    error_controller: 'Symfony\Bundle\TwigBundle\Controller\ExceptionController::showAction'
+
 
     # Session configuration
     session:

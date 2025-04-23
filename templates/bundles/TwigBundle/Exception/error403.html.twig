@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accès refusé
+{% endblock %}
+
+{% block body %}
+	<div style="text-align: center; padding: 50px;">
+		<h1>403 - Accès refusé</h1>
+		<p>Désolé, vous n'avez pas la permission d'accéder à cette page.</p>
+		{% if is_granted('ROLE_ADMIN') %}
+			<a href="{{ path('app_admin') }}">← Retour à l'accueil</a>
+		{% else %}
+			<a href="{{ path('app_user') }}">← Retour à l'accueil</a>
+		{% endif %}
+	</div>
+{% endblock %}
