@@ -1,39 +1,112 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Accueil
-
 {% endblock %}
 
 {% block body %}
-	<button>Postify</button>
-	<div class="intro-container">
-		<h2>Bienvenue sur notre application de messagerie !</h2>
-		<p>Vous venez de rejoindre notre plateforme de discussion où vous pouvez rester connecté avec vos amis et collègues. Voici ce que vous pouvez faire :</p>
+	<div
+		class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-white">
+		<!-- Animated Header -->
+		<header class="relative overflow-hidden py-12">
+			<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')] opacity-20"></div>
+			<div class="container mx-auto px-6 text-center relative z-10">
+				<button class="mb-8 px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate-bounce">
+					Postify
+					<span class="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-yellow-400 animate-ping"></span>
+				</button>
+				<h1 class="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-pink-400">
+					Bienvenue sur Postify
+				</h1>
+				<p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+					Votre plateforme de messagerie nouvelle génération
+				</p>
+			</div>
+		</header>
 
-		<ul>
-			<li>
-				<strong>Envoyer des messages :</strong>
-				Discutez en temps réel avec vos amis, partagez vos idées, vos pensées, ou même des photos.</li>
-			<li>
-				<strong>Envoyer des images :</strong>
-				Enrichissez vos conversations en ajoutant des images à vos messages.</li>
-			<li>
-				<strong>Consulter les messages :</strong>
-				Accédez facilement à l’historique de vos discussions et restez à jour avec vos conversations.</li>
-			<li>
-				<strong>Trouver des utilisateurs :</strong>
-				Explorez les membres de la communauté et commencez des discussions avec eux à tout moment.</li>
-		</ul>
+		<!-- Main Content -->
+		<main class="container mx-auto px-6 py-12">
+			<div
+				class="flex flex-col lg:flex-row gap-12 items-center">
+				<!-- Intro Text -->
+				<div class="flex-1 bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
+					<h2 class="text-3xl font-bold mb-6 text-pink-300">Bienvenue sur notre application de messagerie !</h2>
+					<p class="mb-6 text-lg opacity-90">
+						Vous venez de rejoindre notre plateforme de discussion où vous pouvez rester connecté avec vos amis et collègues.
+					</p>
 
-		<p>Nous espérons que vous passerez un excellent moment à utiliser l’application, et que vous trouverez facilement vos amis pour discuter. N'hésitez pas à nous contacter si vous avez des questions ou des suggestions !</p>
+					<ul class="space-y-4">
+						<li class="flex items-start">
+							<div class="flex-shrink-0 h-8 w-8 rounded-full bg-pink-500 flex items-center justify-center mr-4 mt-1">
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewbox="0 0 20 20" fill="currentColor">
+									<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+								</svg>
+							</div>
+							<div>
+								<strong class="text-yellow-300">Envoyer des messages :</strong>
+								<p class="opacity-90">Discutez en temps réel avec vos amis, partagez vos idées, vos pensées, ou même des photos.</p>
+							</div>
+						</li>
+						<li class="flex items-start">
+							<div class="flex-shrink-0 h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center mr-4 mt-1">
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewbox="0 0 20 20" fill="currentColor">
+									<path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+								</svg>
+							</div>
+							<div>
+								<strong class="text-yellow-300">Envoyer des images :</strong>
+								<p class="opacity-90">Enrichissez vos conversations en ajoutant des images à vos messages.</p>
+							</div>
+						</li>
+						<li class="flex items-start">
+							<div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center mr-4 mt-1">
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewbox="0 0 20 20" fill="currentColor">
+									<path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/>
+									<path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/>
+								</svg>
+							</div>
+							<div>
+								<strong class="text-yellow-300">Consulter les messages :</strong>
+								<p class="opacity-90">Accédez facilement à l'historique de vos discussions et restez à jour avec vos conversations.</p>
+							</div>
+						</li>
+						<li class="flex items-start">
+							<div class="flex-shrink-0 h-8 w-8 rounded-full bg-green-500 flex items-center justify-center mr-4 mt-1">
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewbox="0 0 20 20" fill="currentColor">
+									<path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 12.094A5.973 5.973 0 004 15v1H1v-1a3 3 0 013.75-2.906z"/>
+								</svg>
+							</div>
+							<div>
+								<strong class="text-yellow-300">Trouver des utilisateurs :</strong>
+								<p class="opacity-90">Explorez les membres de la communauté et commencez des discussions avec eux à tout moment.</p>
+							</div>
+						</li>
+					</ul>
+
+					<p class="mt-8 text-lg opacity-90">
+						Nous espérons que vous passerez un excellent moment à utiliser l'application, et que vous trouverez facilement vos amis pour discuter.
+					</p>
+				</div>
+
+				<!-- Image -->
+				<div class="flex-1">
+					<div class="relative group">
+						<div class="absolute -inset-4 bg-gradient-to-r from-pink-600 to-purple-600 rounded-3xl opacity-75 group-hover:opacity-100 blur-xl transition duration-200"></div>
+						<img src="{{ asset('uploads/images/ChatGPT Image 22 avr. 2025, 11_36_26.png') }}" class="relative rounded-2xl shadow-2xl transform group-hover:-rotate-2 transition duration-300 border-4 border-white/20" alt="Postify illustration">
+					</div>
+				</div>
+			</div>
+
+			<!-- CTA Buttons -->
+			<div class="mt-16 flex flex-col sm:flex-row justify-center gap-6">
+				<a href="{{ path('app_register') }}" class="px-8 py-4 bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-center">
+					S'inscrire
+					<span class="ml-2">→</span>
+				</a>
+				<a href="{{ path('app_login') }}" class="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-center">
+					Se connecter
+					<span class="ml-2">🔑</span>
+				</a>
+			</div>
+		</main>
 	</div>
-
-
-	<img src="{{ asset('uploads/images/ChatGPT Image 22 avr. 2025, 11_36_26.png') }}" style="width:500px ; height:500px border ">
-
-
-	<a href="{{ path('app_register') }}">S'inscrire</a>
-	<a href="{{ path('app_login') }}">se connecter</a>
-
-
 {% endblock %}

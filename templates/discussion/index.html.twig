@@ -5,75 +5,86 @@
 {% endblock %}
 
 {% block body %}
-	<h2 style="text-align: center; margin-bottom: 10px;">
-		Discussion avec
-		{{ member.username }}
-	</h2>
-
 	<div
-		style="max-width: 600px; margin: 0 auto; border: 1px solid #ccc; border-radius: 10px; height: 80vh; display: flex; flex-direction: column; background-color: #f9f9f9;">
-
-		<!-- Chat Messages Area -->
-		<div style="flex: 1; padding: 15px; overflow-y: auto;">
-			{% for message in discussions %}
-				<div style="margin: 10px 0; display: flex; flex-direction: column; align-items: {{ message.sender.username == app.user.username ? 'flex-end' : 'flex-start' }};">
-					<div style="padding: 10px; background-color: {{ message.sender.username == app.user.username ? '#dcf8c6' : '#fff' }}; border: 1px solid #ccc; border-radius: 10px; max-width: 70%;">
-						<strong>{{ message.sender.username == app.user.username ? 'Moi' : message.sender.username }}:</strong><br>
-						{{ message.message }}<br>
-						{% if message.image %}
-							<img src="{{ asset('uploads/messages/' ~ message.image) }}" alt="Image" style="max-width: 200px; max-height: 200px; margin-top: 10px;">
-						{% endif %}
-						<small style="color: grey;">{{ message.createdAt|date('H:i') }}</small>
-					</div>
-				</div>
-			{% endfor %}
+		class="flex h-screen bg-gray-100">
+		<!-- Sidebar -->
+		<div class="w-1/4 bg-white border-r border-gray-200 overflow-y-auto">
+			<div class="p-4">
+				<h3 class="text-lg font-semibold text-gray-800 mb-4">Utilisateurs</h3>
+				<ul class="space-y-3">
+					{% for member in members %}
+						<li class="flex items-center p-2 rounded-lg hover:bg-gray-100 transition-colors {% if member.id == app.request.get('id') %}bg-blue-50{% endif %}">
+							<img src="{{ asset('uploads/profile_images/' ~ (member.profileImage ? member.profileImage : 'default-avatar.png')) }}" alt="{{ member.username }}" class="w-10 h-10 rounded-full mr-3">
+							<a href="{{ path('app_discussion', { 'id': member.id }) }}" class="text-gray-700 hover:text-blue-600 transition-colors">
+								{{ member.username }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
 		</div>
 
-		<!-- Input Bar -->
-		<form method="post" enctype="multipart/form-data" style="display: flex; padding: 10px; border-top: 1px solid #ccc; background-color: #fff; align-items: center;">
-			<textarea name="message" rows="1" style="flex: 1; resize: none; border: 1px solid #ccc; border-radius: 20px; padding: 10px 15px; margin-right: 10px;" placeholder="Écris ton message..."></textarea>
+		<!-- Main Chat Area -->
+		<div
+			class="flex-1 flex flex-col">
+			<!-- Chat Header -->
+			<div class="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+				<div class="flex items-center">
+					<img src="{{ asset('uploads/profile_images/' ~ (member.profileImage ? member.profileImage : 'default-avatar.png')) }}" alt="{{ member.username }}" class="w-10 h-10 rounded-full mr-3">
+					<h2 class="text-xl font-semibold text-gray-800">Discussion avec
+						{{ member.username }}</h2>
+				</div>
+				<a href="{{ is_granted('ROLE_ADMIN') ? path('app_admin') : path('app_user') }}" class="text-gray-500 hover:text-gray-700 transition-colors">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+					</svg>
+				</a>
+			</div>
 
-			<!-- Image Upload Button -->
-			<label for="profileImage" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; cursor: pointer;">
-				<img src="{{ asset('uploads/images/add-image.png') }}" alt="Upload Image" title="Upload Image" style="width: 30px; height: 30px; border-radius: 20%;">
+			<!-- Messages Container -->
+			<div class="flex-1 overflow-y-auto p-4 bg-gray-50">
+				<div class="space-y-4">
+					{% for message in discussions %}
+						<div class="flex flex-col {{ message.sender.username == app.user.username ? 'items-end' : 'items-start' }}">
+							<div class="max-w-xs md:max-w-md lg:max-w-lg rounded-lg px-4 py-2
+																		                              {{ message.sender.username == app.user.username ? 'bg-blue-500 text-white' : 'bg-white border border-gray-200' }}">
+								<div class="font-medium">
+									{{ message.sender.username == app.user.username ? 'Moi' : message.sender.username }}
+								</div>
+								<div class="my-1">{{ message.message }}</div>
+								{% if message.image %}
+									<div class="mt-2">
+										<img src="{{ asset('uploads/messages/' ~ message.image) }}" alt="Image" class="max-w-full h-auto rounded-lg">
+									</div>
+								{% endif %}
+								<div class="text-xs mt-1 {{ message.sender.username == app.user.username ? 'text-blue-100' : 'text-gray-500' }}">
+									{{ message.createdAt|date('H:i') }}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
 
+			<!-- Message Input -->
+			<form method="post" enctype="multipart/form-data" class="bg-white border-t border-gray-200 p-4">
+				<div class="flex items-center space-x-2">
+					<textarea name="message" rows="1" class="flex-1 border border-gray-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" placeholder="Écris ton message..."></textarea>
 
-			</label>
-			<input
-			type="file" id="profileImage" name="image" accept="image/*" style="display: none;">
+					<label class="bg-green-500 text-white p-2 rounded-full cursor-pointer hover:bg-green-600 transition-colors">
+						<input type="file" id="profileImage" name="image" accept="image/*" class="hidden">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+						</svg>
+					</label>
 
-			<!-- Submit Button -->
-			<button type="submit" style="background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-weight: bold; cursor: pointer; position: relative;">
-				<img src="{{ asset('uploads/images/paper-plane.png') }}" alt="send message" title="send message" style="width: 30px; height: 30px; border-radius: 20%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-			</button>
-		</form>
+					<button type="submit" class="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+						</svg>
+					</button>
+				</div>
+			</form>
+		</div>
 	</div>
-
-	<div style="text-align: center; margin-top: 10px;">
-		{% if is_granted('ROLE_ADMIN') %}
-			<a href="{{ path('app_admin') }}">← Retour</a>
-		{% else %}
-			<a href="{{ path('app_user') }}">← Retour</a>
-		{% endif %}
-	</div>
-
-	<!-- Sidebar (List of Members) -->
-	<div style="width: 25%; padding: 10px; background-color: #f1f1f1; border-right: 1px solid #ccc; overflow-y: auto;">
-		<h3>Utilisateurs</h3>
-		<ul style="list-style: none; padding: 0;">
-			{% for member in members %}
-				<li style="margin-bottom: 15px; display: flex; align-items: center;">
-					{% if member.profileImage %}
-						<img src="{{ asset('uploads/profile_images/' ~ member.profileImage) }}" alt="{{ member.username }}'s profile image" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-					{% else %}
-						<img src="{{ asset('uploads/profile_images/default-avatar.png') }}" alt="default avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-					{% endif %}
-					<a href="{{ path('app_discussion', { 'id': member.id }) }}" style="text-decoration: none; color: black;">
-						{{ member.username }}
-					</a>
-				</li>
-			{% endfor %}
-		</ul>
-	</div>
-
 {% endblock %}

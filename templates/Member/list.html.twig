@@ -1,26 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	{% if is_granted('ROLE_ADMIN') %}
-		<a href="{{ path('app_admin') }}">X</a>
+	<div class="min-h-screen bg-gray-100 p-6">
+		<div
+			class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+			{# Close button #}
+			<div class="flex justify-end mb-4">
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('app_admin') }}" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">X</a>
+				{% else %}
+					<a href="{{ path('app_user') }}" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">X</a>
+				{% endif %}
+			</div>
 
-	{% else %}
-		<a href="{{ path('app_user') }}">X</a>
-	{% endif %}
+			{# Title #}
+			<h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Liste d'amis</h1>
 
-	<h1>Liste d'amis</h1>
-	<ul>
-		{% for member in members %}
-			<li>
-				<a href="{{ path('member_profile', {id: member.id}) }}">
-					{% if member == app.user %}
-						<strong style="color: blue;">{{ member.username }}
-							(You)</strong>
-					{% else %}
-						{{ member.username }}
-					{% endif %}
-				</a>
-			</li>
-		{% endfor %}
-	</ul>
+			{# Friends list #}
+			<ul class="space-y-3">
+				{% for member in members %}
+					<li class="hover:bg-gray-50 rounded-lg transition">
+						<a href="{{ path('member_profile', {id: member.id}) }}" class="block p-3">
+							{% if member == app.user %}
+								<span class="font-medium text-blue-600">{{ member.username }}
+									(You)</span>
+							{% else %}
+								<span class="font-medium text-gray-700">{{ member.username }}</span>
+							{% endif %}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
 {% endblock %}

@@ -5,50 +5,65 @@
 {% endblock %}
 
 {% block body %}
-
-	{% if is_granted('ROLE_ADMIN') %}
-		<a href="{{ path('app_admin') }}">← Retour</a>
-	{% else %}
-		<a href="{{ path('app_user') }}">← Retour</a>
-	{% endif %}
-
-	<div style="max-width: 400px; margin: 40px auto; text-align: center; border: 1px solid #ccc; padding: 20px; border-radius: 15px;">
-
-		<h2>{{ member.username }}</h2>
-
-		<div style="margin-bottom: 20px;">
-			{% if member.profileImage %}
-				<img src="{{ asset('uploads/profile_images/' ~ member.profileImage) }}" alt="Profile Image" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
-			{% else %}
-				<img src="{{ asset('uploads/profile_images/default_image.png') }}" alt="Default Profile Image" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
-			{% endif %}
-		</div>
-
-		<div style="text-align: left; padding: 0 20px;">
-			<p>
-				<strong>Nom d'utilisateur:</strong>
-				{{ member.username }}</p>
-
-			<p>
-				<strong>Email:</strong>
-				{{ member.email }}</p>
-
-			<p>
-				<strong>Genre:</strong>
-				{{ member.gender | default('Non spécifié') }}</p>
-
-			<p>
-				<strong>Rôle:</strong>
-				{% if 'ROLE_ADMIN' in member.roles %}
-					{{ member.gender == 'female' ? 'Administratrice' : 'Administrateur' }}
+	<div class="min-h-screen bg-gray-100 p-4">
+		<div
+			class="max-w-md mx-auto">
+			{# Back button #}
+			<div class="mb-4">
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('app_admin') }}" class="text-gray-600 hover:text-gray-800 font-medium">← Retour</a>
 				{% else %}
-					{{ member.gender == 'female' ? 'Utilisatrice' : 'Utilisateur' }}
+					<a href="{{ path('app_user') }}" class="text-gray-600 hover:text-gray-800 font-medium">← Retour</a>
 				{% endif %}
-			</p>
+			</div>
 
-			<p>
-				<strong>Leur identifiant :</strong>
-				{{ app.user.id }}</p>
-		</p>
+			{# Profile card #}
+			<div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+				<div class="p-6 text-center">
+					<h2 class="text-2xl font-bold text-gray-800 mb-6">{{ member.username }}</h2>
+
+					{# Profile image #}
+					<div class="mb-6">
+						{% if member.profileImage %}
+							<img src="{{ asset('uploads/profile_images/' ~ member.profileImage) }}" alt="Profile Image" class="w-32 h-32 rounded-full object-cover mx-auto border-2 border-gray-200">
+						{% else %}
+							<img src="{{ asset('uploads/profile_images/default_image.png') }}" alt="Default Profile Image" class="w-32 h-32 rounded-full object-cover mx-auto border-2 border-gray-200">
+						{% endif %}
+					</div>
+
+					{# Profile details #}
+					<div class="space-y-4 text-left px-4">
+						<p class="text-gray-700">
+							<strong class="text-gray-800">Nom d'utilisateur:</strong>
+							{{ member.username }}
+						</p>
+
+						<p class="text-gray-700">
+							<strong class="text-gray-800">Email:</strong>
+							{{ member.email }}
+						</p>
+
+						<p class="text-gray-700">
+							<strong class="text-gray-800">Genre:</strong>
+							{{ member.gender | default('Non spécifié') }}
+						</p>
+
+						<p class="text-gray-700">
+							<strong class="text-gray-800">Rôle:</strong>
+							{% if 'ROLE_ADMIN' in member.roles %}
+								{{ member.gender == 'female' ? 'Administratrice' : 'Administrateur' }}
+							{% else %}
+								{{ member.gender == 'female' ? 'Utilisatrice' : 'Utilisateur' }}
+							{% endif %}
+						</p>
+
+						<p class="text-gray-700">
+							<strong class="text-gray-800">Leur identifiant :</strong>
+							{{ app.user.id }}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>{% endblock %}
+{% endblock %}
